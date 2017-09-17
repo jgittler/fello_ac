@@ -7,6 +7,11 @@ defmodule FelloAc.Email do
     |> cc("jonathan@felloeyewear.com")
     |> from({"Fello Checkouts", "contact@felloeyewear.com"})
     |> subject("New Checkout Started")
-    |> text_body(body)
+    |> text_body(to_formatted_string(body))
+  end
+
+  defp to_formatted_string(map) do
+    map
+    |> Enum.map_join(" | ", fn({key, value}) -> "#{key}: #{value}" end)
   end
 end
