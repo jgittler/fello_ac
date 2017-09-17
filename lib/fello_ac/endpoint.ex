@@ -2,7 +2,7 @@ defmodule FelloAc.Endpoint do
   use Plug.Router
   alias FelloAc.Checkout
 
-  plug Plug.Static, at: "/priv", from: :fello_ac, only: ~w(favicon.ico robots.txt)
+  plug Plug.Static, at: "/", from: :fello_ac, only: ~w(favicon.ico robots.txt)
 
   plug Plug.Parsers, parsers: [:json], json_decoder: Poison
   plug :match
