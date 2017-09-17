@@ -31,13 +31,9 @@ defmodule FelloAcTest do
   end
 
   test "POST /create" do
-    body = %{
-      "email" => "test@example.com",
-      "item" => "test-item",
-      "device" => "test-device"
-    }
+    query_params = "?email=test@example.com&item=test-item&device=test-device"
 
-    conn = conn(:post, "/create", body) |> FelloAc.Endpoint.call(@_opts)
+    conn = conn(:post, "/create#{query_params}") |> FelloAc.Endpoint.call(@_opts)
 
     assert conn.state == :sent
     assert conn.status == 201

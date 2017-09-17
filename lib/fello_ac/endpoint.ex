@@ -2,7 +2,7 @@ defmodule FelloAc.Endpoint do
   use Plug.Router
   alias FelloAc.Checkout
 
-  plug Plug.Static, at: "prive", from: :fello_ac, only: ~w(favicon.ico robots.txt)
+  plug Plug.Static, at: "/priv", from: :fello_ac, only: ~w(favicon.ico robots.txt)
 
   plug Plug.Parsers, parsers: [:json], json_decoder: Poison
   plug :match
@@ -29,13 +29,13 @@ defmodule FelloAc.Endpoint do
 
   post "/create" do
     {status, body} =
-      case conn.body_params do
+      case conn.query_params do
         %{"item" => _item, "device" => _device, "email" => _email} ->
-          body = conn.body_params
+          data = conn.query_params
 
-          Checkouts.report_async(body)
+          Checkouts.report_async(data)
 
-          {:ok, checkout} = Checkouts.create(body)
+          {:ok, checkout} = Checkouts.create(data)
 
           {201, create_respons_body(checkout)}
 
