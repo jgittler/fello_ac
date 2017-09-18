@@ -12,9 +12,5 @@ config :fello_ac, FelloAc.Repo, [
 ]
 
 config :fello_ac, FelloAc.Mailer,
-        adapter: Swoosh.Adapters.Local,
-        relay: "localhost:4000",
-        username: "contact@felloeyewear.com",
-        password: {:system, "EMAIL_PASSWORD"},
-        tls: :always
+        adapter: Swoosh.Adapters.Test
 

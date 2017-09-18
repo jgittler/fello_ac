@@ -6,7 +6,7 @@ defmodule Checkouts do
   def report_async(body) do
     Task.start(fn ->
       body
-      |> FelloAc.Email.welcome_email
+      |> FelloAc.Email.report
       |> FelloAc.Mailer.deliver
     end)
   end

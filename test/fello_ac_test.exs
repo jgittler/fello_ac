@@ -15,6 +15,11 @@ defmodule FelloAcTest do
       "device" => "test-device",
       "email" => "test@example.com"
     })
+    Checkouts.create(%{
+      "item" => "test-item",
+      "device" => "test-device",
+      "email" => "test2@example.com"
+    })
 
     conn = conn(:get, "/list?secret=secret")
            |> FelloAc.Endpoint.call(@_opts)
@@ -22,12 +27,16 @@ defmodule FelloAcTest do
     assert conn.state == :sent
     assert conn.status == 200
 
-    resp_body = conn.resp_body |> Poison.decode! |> List.first
+    resp_body = conn.resp_body |> Poison.decode!
 
-    assert resp_body |> Map.fetch!("item") == "test-item"
-    assert resp_body |> Map.fetch!("device") == "test-device"
-    assert resp_body |> Map.fetch!("email") == "test@example.com"
-    assert {:ok, _datetime} = resp_body |> extract_datetime
+    assert length(resp_body) == 2
+
+    first_item = List.first(resp_body)
+
+    assert first_item |> Map.fetch!("item") == "test-item"
+    assert first_item |> Map.fetch!("device") == "test-device"
+    assert first_item |> Map.fetch!("email") == "test2@example.com"
+    assert first_item |> Map.fetch!("initiated_at") != "unsupported format"
   end
 
   test "POST /create" do
@@ -41,10 +50,5 @@ defmodule FelloAcTest do
     resp_body = conn.resp_body |> Poison.decode!
 
     assert resp_body |> Map.fetch!("id") |> is_integer
-  end
-
-  def extract_datetime(%{"inserted_at" => date_string}) do
-    {:ok, ndt} = date_string |> NaiveDateTime.from_iso8601
-    DateTime.from_naive(ndt, "Etc/UTC")
   end
 end

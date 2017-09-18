@@ -18,4 +18,30 @@ defmodule FelloAc.Checkout do
     checkout
     |> cast(params, @optional_fields, @optional_fields)
   end
+
+  defimpl Poison.Encoder, for: __MODULE__ do
+    def encode(
+      %{
+        email: email,
+        item: item,
+        device: device,
+        inserted_at: inserted_at
+      },
+      options
+    ) do
+
+      datetime_formatter = case Keyword.get(options, :datetime_formatter) do
+        {:ok, func} -> func
+
+        _ -> &FriendlyDateTime.local/2
+      end
+
+      Poison.Encoder.encode(%{
+        email: email,
+        item: item,
+        device: device,
+        initiated_at: datetime_formatter.(inserted_at, :long_with_tz)
+      }, [])
+    end
+  end
 end

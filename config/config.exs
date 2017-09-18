@@ -2,6 +2,7 @@ use Mix.Config
 
 config :fello_ac,
        secret: System.get_env("SECRET"),
+       tz: "America/Los_Angeles",
        port: 4000
 
 config :fello_ac, :ecto_repos, [FelloAc.Repo]

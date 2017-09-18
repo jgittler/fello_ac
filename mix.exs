@@ -14,8 +14,8 @@ defmodule FelloAc.Mixfile do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
-      mod: {FelloAc, []}
+      mod: {FelloAc, []},
+      extra_applications: [:logger, :timex]
     ]
   end
 
@@ -29,7 +29,8 @@ defmodule FelloAc.Mixfile do
       {:postgrex, "~> 0.13.3"},
       {:eiconv, github: "zotonic/eiconv"},
       {:swoosh, "~> 0.10.0"},
-      {:gen_smtp, "~> 0.12.0"}
+      {:gen_smtp, "~> 0.12.0"},
+      {:timex, "~> 3.1"}
     ]
   end
 end
